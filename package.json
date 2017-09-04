@@ -1,0 +1,22 @@
+{
+  "name": "chatapp",
+  "version": "1.0.0",
+  "description": "ChatApplication",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Maheswariviji/chatApp.git"
+  },
+  "keywords": [
+    "chat"
+  ],
+  "author": "RET",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Maheswariviji/chatApp/issues"
+  },
+  "homepage": "https://github.com/Maheswariviji/chatApp#readme"
+}
