@@ -76,20 +76,20 @@ onLogin()
 // 	 // this.processing = true; 
 //     this.disableForm(); 
     
-//     const user = {
-//       email: this.form.get('email').value, 
-//       password: this.form.get('password').value
-//     }
-//     console.log(user);
-//     if(user){
-// setTimeout(() => {
-//          this.router.navigate(['/dashboard']); 
-//         }, 1000);
-//     }
-//     else{
-//     	this.messageClass = 'alert alert-danger'; 
-//         this.message = 'Please Enter Valid credientials';
-//     }
+    const user = {
+      email: this.loginform.get('email').value, 
+      password: this.loginform.get('password').value
+    }
+    console.log(user);
+    if(user){
+setTimeout(() => {
+         this.router.navigate(['/dashboard']); 
+        }, 1000);
+    }
+    // else{
+    // 	this.messageClass = 'alert alert-danger'; 
+    //     this.message = 'Please Enter Valid credientials';
+    // }
 
 }
   ngOnInit() {
