@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -10,8 +12,8 @@ export class RegisterComponent implements OnInit {
     registerForm: FormGroup;
 
 constructor(
-  private formBuilder: FormBuilder
-) {
+  private formBuilder: FormBuilder,
+public router: Router) {
   this.createForm(); 
 }
 
@@ -81,9 +83,19 @@ matchingPasswords(password, confirm) {
 
 
 onRegisterSubmit() {
-  console.log('registerForm submitted');
+    const user = {
+            username: this.registerForm.get('username').value,
+            email: this.registerForm.get('email').value, 
+            password: this.registerForm.get('password').value
+          }
+          console.log(user);
+          if(user){
+      setTimeout(() => {
+               this.router.navigate(['/dashboard']); 
+              }, 1000);
+ 
 }
-
+}
 ngOnInit() {
 }
 

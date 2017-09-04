@@ -37,8 +37,12 @@ validateEmail(controls) {
     }
   }
 
-onforgotSubmit() {
-  console.log('forgotForm submitted');
+onForgotSubmit() {
+    const user = {  
+            email: this.forgotForm.get('email').value
+          }
+          console.log(user);
+
 }
   ngOnInit() {
   }
