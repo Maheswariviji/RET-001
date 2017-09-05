@@ -107,11 +107,6 @@ let validPassword = (password) => {
 
 const passwordValidators = [
   {
-    validator: passwordLengthChecker,
-    message: 'Password must be at least 8 characters but no more than 35'
-  },
-
-  {
     validator: validPassword,
     message: 'Must have at least one uppercase, lowercase, special character, and number'
   }
@@ -122,9 +117,11 @@ const passwordValidators = [
 var userSchema = mongoose.Schema({
 
     local            : {
-    	username: { type: String, required: true, unique: true, lowercase: true, validate: usernameValidators },
-        email        :{ type:String,required: true, unique: true, lowercase: true,validate: emailValidators },
-        password     : {type:String,required: true, validate: passwordValidators}
+    	  username: { type: String, required: true, unique: true, lowercase: true },
+        email        :{ type:String,required: true, unique: true, lowercase: true },
+        password     : {type:String,required: true},
+        resettoken: { type: String, required: false }
+      },
     },
     facebook         : {
         id           : String,

@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import {AuthService} from '../../Services/regAuth.service';
+
+
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -10,13 +14,21 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
 
     registerForm: FormGroup;
+emailValid;
+  emailMessage;
+  usernameValid;
+  usernameMessage;
+  message;
+  messageClass;
+  processing = false;
 
 constructor(
   private formBuilder: FormBuilder,
-public router: Router) {
+public router: Router,
+public authService: AuthService
+) {
   this.createForm(); 
 }
-
 createForm() {
   this.registerForm = this.formBuilder.group({
     email: ['', Validators.compose([
@@ -83,19 +95,53 @@ matchingPasswords(password, confirm) {
 
 
 onRegisterSubmit() {
+   console.log("form submitted");
     const user = {
             username: this.registerForm.get('username').value,
             email: this.registerForm.get('email').value, 
             password: this.registerForm.get('password').value
           }
           console.log(user);
-          if(user){
-      setTimeout(() => {
-               this.router.navigate(['/dashboard']); 
-              }, 1000);
- 
+this.authService.registerUser(user).subscribe(data => {
+  console.log(data);
+console.log("Registered");
+setTimeout(() => {
+          this.router.navigate(['/login']); 
+        }, 1000);
+
+});
 }
-}
+
+checkEmail() {
+   
+    this.authService.checkEmail(this.registerForm.get('email').value).subscribe(data => {
+     if (!data.success) {
+        this.emailValid = false; 
+        this.emailMessage = data.message; 
+      } else {
+        this.emailValid = true; 
+        this.emailMessage = data.message; 
+      }
+    });
+  }
+
+  checkUsername() {
+   this.authService.checkUsername(this.registerForm.get('username').value).subscribe(data => {
+     if (!data.success) {
+        this.usernameValid = false; 
+        this.usernameMessage = data.message; 
+      } else {
+        this.usernameValid = true; 
+        this.usernameMessage = data.message; 
+      }
+    });
+  }
+  google()
+  {
+    console.log(this.router.url);
+    console.log(window.location.pathname);
+   }
+
 ngOnInit() {
 }
 

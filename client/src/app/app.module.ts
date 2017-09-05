@@ -9,6 +9,8 @@ import { LoginComponent } from './components/login/login.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
 
+import { AuthService } from './Services/regAuth.service';
+
 
 @NgModule( {
     declarations: [
@@ -24,7 +26,7 @@ import { DashboardComponent } from './Components/dashboard/dashboard.component';
         ReactiveFormsModule,
         AppRoutingModule
     ],
-    providers: [],
+    providers: [AuthService],
     bootstrap: [AppComponent]
 } )
 export class AppModule { }
