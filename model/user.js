@@ -122,19 +122,19 @@ var userSchema = mongoose.Schema({
         password     : {type:String,required: true},
         resettoken: { type: String, required: false }
       },
-    },
-    facebook         : {
-        id           : String,
-        token        : String,
-        email        : {type:String,required: true, unique: true, lowercase: true},
-        name         : {type:String,required: true, unique: true, lowercase: true}
-    },
-    twitter          : {
-        id           : String,
-        token        : String,
-        displayName  : String,
-        username     : {type:String,required: true, unique: true, lowercase: true}
-    },
+   
+    // facebook         : {
+    //     id           : String,
+    //     token        : String,
+    //     email        : {type:String,required: true, unique: true, lowercase: true},
+    //     name         : {type:String,required: true, unique: true, lowercase: true}
+    // },
+    // twitter          : {
+    //     id           : String,
+    //     token        : String,
+    //     displayName  : String,
+    //     username     : {type:String,required: true, unique: true, lowercase: true}
+    // },
     google           : {
         id           : String,
         token        : String,

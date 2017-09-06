@@ -12,7 +12,7 @@ import {AuthService} from '../../Services/regAuth.service';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-
+domain="http://localhost:8080";
     registerForm: FormGroup;
 emailValid;
   emailMessage;
@@ -138,8 +138,8 @@ checkEmail() {
   }
   google()
   {
-    console.log(this.router.url);
-    console.log(window.location.pathname);
+    // console.log(this.router.url);
+    // console.log(window.location.pathname);
    }
 
 ngOnInit() {
