@@ -6,6 +6,8 @@ const router = express.Router();
 const mongoose=require('mongoose');
 const config =require('./config/database');
 const path=require('path');
+const loginAuth = require('./routes/loginAuthentication')(router);
+const forgotAuth = require('./routes/forgotPasswordAuthentication');
 const cors = require('cors');
 const passport = require('passport');
 const Register=require('./routes/userRoute')(router);
@@ -29,6 +31,8 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(__dirname+'/client/dist/'));
+app.use('/loginAuthentication', loginAuth);
+app.use('/forgotPasswordAuthentication', forgotAuth);
 
 
 app.use(passport.initialize());
@@ -41,12 +45,7 @@ app.get('/login', (req,res) => {
 	res.sendFile(path.join(__dirname+'/client/dist/index.html'));
 });
 
-app.get('/dashboard', (req,res) => {
-	res.sendFile(path.join(__dirname+'/client/dist/index.html'));
-});
-app.get('/register', (req,res) => {
-	res.sendFile(path.join(__dirname+'/client/dist/index.html'));
-});
+
 
 app.listen(8080,()=> {
 	console.log('Listening on port 8080');

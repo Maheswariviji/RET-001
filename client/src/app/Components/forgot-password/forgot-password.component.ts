@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { ForgotPasswordService } from '../../services/forgot-password.service';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { ViewContainerRef } from '@angular/core';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
@@ -10,9 +13,13 @@ export class ForgotPasswordComponent implements OnInit {
     forgotForm: FormGroup;
 
 constructor(
-  private formBuilder: FormBuilder
+  private formBuilder: FormBuilder,
+  private forgotPasswordService: ForgotPasswordService,
+  public router: Router,
+  public toastr: ToastsManager,public vcr: ViewContainerRef
 ) {
   this.createForm();
+  this.toastr.setRootViewContainerRef(vcr);
 }
 createForm() {
     this.forgotForm = this.formBuilder.group({
@@ -41,8 +48,17 @@ onForgotSubmit() {
     const user = {  
             email: this.forgotForm.get('email').value
           }
-          console.log(user);
-
+         
+this.forgotPasswordService.forgot(user).subscribe(data => {
+    if (!data.success) {
+        this.toastr.error(data.message, 'Oops!');
+    } else {
+        this.toastr.success(data.message, 'Success!');
+      setTimeout(() => {
+        this.router.navigate(['/login']); 
+      }, 3000);
+}
+});
 }
   ngOnInit() {
   }
