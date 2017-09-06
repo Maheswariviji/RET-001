@@ -14,7 +14,7 @@ import { ViewContainerRef } from '@angular/core';
 export class ResetPasswordComponent implements OnInit {
     token: string;
     resetForm: FormGroup;
-     isHidden;
+     isHidden =true;
   constructor( private formBuilder: FormBuilder,
           public router: Router ,public route: ActivatedRoute, private ResetpasswordService: ResetpasswordService,
   public toastr: ToastsManager,public vcr: ViewContainerRef) {
