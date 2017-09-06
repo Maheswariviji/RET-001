@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginAuthService } from '../../services/login-auth.service';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { ViewContainerRef } from '@angular/core';
+import { AuthGuard } from '../../guards/auth.guard';
 
 @Component({
   selector: 'app-login',
@@ -8,14 +12,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-// messageClass;
-//   message;
-// processing = false;
-  loginform:FormGroup;
 
-  constructor(private formBuilder: FormBuilder,public router: Router) 
+  loginform:FormGroup;
+previousUrl;
+
+  constructor(private formBuilder: FormBuilder,public router: Router,
+          private authService: LoginAuthService,public toastr: ToastsManager,
+          public vcr: ViewContainerRef,private authGuard: AuthGuard) 
   {
     this.createForm();
+    this.toastr.setRootViewContainerRef(vcr);
    }
 
   createForm() {
@@ -46,8 +52,8 @@ export class LoginComponent implements OnInit {
       return null; 
     } else {
       return { 
-      	'validatePassword': true
-      	 } 
+       'validatePassword': true
+        } 
     }
   }
 validateEmail(controls) {
@@ -61,38 +67,45 @@ validateEmail(controls) {
     }
   }
  
-//   disableForm() {
-//     this.form.controls['email'].disable(); 
-//     this.form.controls['password'].disable(); 
-// }
+  disableForm() {
+   this.loginform.controls['email'].disable(); 
+   this.loginform.controls['password'].disable(); }
  
-//   enableForm() {
-//     this.form.controls['email'].enable();
-//     this.form.controls['password'].enable(); 
-//   }
+  enableForm() {
+   this.loginform.controls['email'].enable();
+    this.loginform.controls['password'].enable(); 
+  }
 
 onLogin()
 {
-// 	 // this.processing = true; 
-//     this.disableForm(); 
-    
+
     const user = {
       email: this.loginform.get('email').value, 
       password: this.loginform.get('password').value
     }
-    console.log(user);
-    if(user){
-setTimeout(() => {
-         this.router.navigate(['/dashboard']); 
-        }, 1000);
-    }
-    // else{
-    // 	this.messageClass = 'alert alert-danger'; 
-    //     this.message = 'Please Enter Valid credientials';
-    // }
-
+    this.authService.login(user).subscribe(data => {
+        
+        if (!data.success) {
+            this.toastr.error(data.message, 'Oops!');
+        } else {
+            this.toastr.success(data.message, 'Success!');
+          this.authService.storeUserData(data.token, data.user);
+        
+          setTimeout(() => {
+              if (this.previousUrl) {
+                  this.router.navigate([this.previousUrl]); 
+      } else{
+            this.router.navigate(['/dashboard']); 
+      }        }, 2000);
+  }
+    });
 }
   ngOnInit() {
+  
+      if (this.authGuard.redirectUrl) {
+          this.toastr.error('You must be logged in to view that page.', 'Oops!'); 
+        this.previousUrl = this.authGuard.redirectUrl; 
+  this.authGuard.redirectUrl = undefined; 
   }
-
+  }
 }
