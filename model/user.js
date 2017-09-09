@@ -121,7 +121,7 @@ var userSchema = mongoose.Schema({
         email        :{ type:String,required: true, unique: true, lowercase: true },
         password     : {type:String,required: true},
         resettoken: { type: String, required: false }
-      },
+      }
    
     // facebook         : {
     //     id           : String,
@@ -135,12 +135,12 @@ var userSchema = mongoose.Schema({
     //     displayName  : String,
     //     username     : {type:String,required: true, unique: true, lowercase: true}
     // },
-    google           : {
-        id           : String,
-        token        : String,
-        email        : {type:String,required: true, unique: true, lowercase: true},
-        name         : {type:String,required: true, unique: true, lowercase: true}
-    }
+    // google           : {
+    //     id           : String,
+    //     token        : String,
+    //     email        : {type:String,required: true, unique: true, lowercase: true},
+    //     name         : {type:String,required: true, unique: true, lowercase: true}
+    // }
 
 });
 

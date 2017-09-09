@@ -114,3 +114,18 @@ body{
         font-size:13px;
         padding-top:10px;
     }
+    .alert {
+    padding: 0 !important;
+    margin-bottom: 0 !important;
+    
+}
+     .alert-success
+     {background-color: #fff !important;
+    border-color: #fff !important;
+        color:green !important;
+     }
+      .alert-danger
+     { background-color: #fff !important;
+    border-color: #fff !important;
+        color:red !important;
+     }

@@ -8,9 +8,10 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { AuthService } from './Services/regAuth.service';
-
+import {ToastModule} from 'ng2-toastr/ng2-toastr';
 
 @NgModule( {
     declarations: [
@@ -24,7 +25,9 @@ import { AuthService } from './Services/regAuth.service';
         BrowserModule,
         HttpModule,
         ReactiveFormsModule,
-        AppRoutingModule
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        ToastModule.forRoot()
     ],
     providers: [AuthService],
     bootstrap: [AppComponent]

@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit  } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import {AuthService} from '../../Services/regAuth.service';
-
-
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import {ViewContainerRef} from '@angular/core';
 
 @Component({
   selector: 'app-register',
@@ -21,13 +21,17 @@ emailValid;
   message;
   messageClass;
   processing = false;
+    emailClass;
+  usernameclass;
 
 constructor(
   private formBuilder: FormBuilder,
 public router: Router,
-public authService: AuthService
+public authService: AuthService,public toastr: ToastsManager,
+public vcr: ViewContainerRef
 ) {
   this.createForm(); 
+   this.toastr.setRootViewContainerRef(vcr);
 }
 createForm() {
   this.registerForm = this.formBuilder.group({
@@ -103,11 +107,15 @@ onRegisterSubmit() {
           }
           console.log(user);
 this.authService.registerUser(user).subscribe(data => {
-  console.log(data);
-console.log("Registered");
+
+  if (!data.success) {
+            this.toastr.error(data.message, 'Oops!');
+        } else {
+            this.toastr.success(data.message, 'Success!');
 setTimeout(() => {
           this.router.navigate(['/login']); 
-        }, 1000);
+        }, 2000);
+}
 
 });
 }
@@ -118,9 +126,11 @@ checkEmail() {
      if (!data.success) {
         this.emailValid = false; 
         this.emailMessage = data.message; 
+        this.emailClass='alert alert-danger';
       } else {
         this.emailValid = true; 
         this.emailMessage = data.message; 
+         this.emailClass='alert alert-success';
       }
     });
   }
@@ -130,17 +140,15 @@ checkEmail() {
      if (!data.success) {
         this.usernameValid = false; 
         this.usernameMessage = data.message; 
+        this.usernameclass='alert alert-danger';
       } else {
         this.usernameValid = true; 
         this.usernameMessage = data.message; 
+         this.usernameclass='alert alert-success';
       }
     });
   }
-  google()
-  {
-    // console.log(this.router.url);
-    // console.log(window.location.pathname);
-   }
+  
 
 ngOnInit() {
 }

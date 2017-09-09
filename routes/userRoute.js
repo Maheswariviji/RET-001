@@ -2,7 +2,9 @@ const User=require('../model/user');
 const config = require('../config/database'); 
 const passport = require('passport');
 const LocalStrategy    = require('passport-local').Strategy;
-const GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
+const nodemailer = require('nodemailer');
+
+
 
 module.exports=(router)=>{
 
@@ -25,6 +27,7 @@ passport.use('local-signup', new LocalStrategy({
     function(req, email, password, done) {
         if (email)
             email = email.toLowerCase(); 
+          console.log(email);
         process.nextTick(function() {
           if(req.body.email){
  User.findOne({ 'local.email' :  email }, function(err, user) {
@@ -38,11 +41,40 @@ passport.use('local-signup', new LocalStrategy({
                         var newuser = new User();
                         newuser.local.email = req.body.email;
                          newuser.local.username = req.body.username;
-                        newuser.local.password = newuser.generateHash(req.body.password);
+var id= Math.floor((1 + Math.random()) * 0x10000).toString(4).substring(1);
+   console.log(id);
+   var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'sampletask04@gmail.com',
+    pass: 'sampletask004'
+  }
+});
+
+var mailOptions = {
+  from: 'sampletask04@gmail.com',
+  to: req.body.email,
+  subject: 'Sending User Credential',
+  text:'Hi User',
+  html: "<b>Hello</b>"+req.body.username+'<br>'+'<br>'+"<b>UserName</b>"+req.body.email+'<br>'+'<br>'+"<b>Password</b>"+id
+};
+
+transporter.sendMail(mailOptions, function(error, info){
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Email sent: ' + info.response);
+  }
+});
+
+                        // newuser.local.password = newuser.generateHash(req.body.password);
+                           newuser.local.password = newuser.generateHash(id);
+                          
                       newuser.save(function (err) {
                             if (err)
-                                return done(err);
-                            
+                              return done(err);
+                              console.log("newuser saved");
+                            console.log(newuser)
                             return done(null,newuser);
                         });
                     }
@@ -58,10 +90,10 @@ router.post('/registerauth',(req, res,next) => {
 
   passport.authenticate('local-signup', function(err, user, info) {
 if (user === false) {
-res.json({ success: true, message: 'not registered!' });
+res.json({ success: true, message: 'Not Registered Try Again ' });
       return res.redirect('/register');
     } else {
-    res.json({ success: true, message: 'Acount registered!' });
+    res.json({ success: true, message: 'Account Registered!' });
      
     }
   })(req, res, next);
@@ -111,89 +143,9 @@ router.get('/checkEmail/:email', (req, res) => {
   });
 
 
- router.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
-
-        router.get('/auth/google/callback',
-            passport.authenticate('google', function(err, user, info) {
-    if (err) { return next(err); }
-    if (user) { return res.redirect('/dashboard'); }
-    else
-      {return res.redirect('/register');}
-            }));
 
 
-passport.use(new GoogleStrategy({
-clientID        : '889390166031-ute4b4qihe2mrjdf493ljsn91ss6ji6j.apps.googleusercontent.com',
-        clientSecret    : 'acOu8CVZUG8HLwUK5Ys-y91y',
-        callbackURL      : 'http://localhost:8080/auth/google/callback',
-       passReqToCallback : true 
 
-    },
-    function(req, token, refreshToken, profile, done) {
-
-        process.nextTick(function() {
-
-            if (!req.user) {
-
-                User.findOne({ 'google.id' : profile.id }, function(err, user) {
-                    if (err)
-                        return done(err);
-
-                    if (user) {
-                       if (!user.google.token) {
-                            user.google.token = token;
-                            user.google.name  = profile.displayName;
-                            user.google.email = (profile.emails[0].value || '').toLowerCase(); // pull the first email
-
-                            user.save(function(err) {
-                                if (err)
-                                    return done(err);
-                                    
-                                return done(null, user);
-                            });
-                        }
-
-                        return done(null, user);
-                    } else {
-                        console.log("google");
-console.log(profile);
-                        var newUser          = new User();
-
-                        newUser.google.id    = profile.id;
-                        newUser.google.token = token;
-                        newUser.google.name  = profile.displayName;
-                        newUser.google.email = (profile.emails[0].value || '').toLowerCase(); // pull the first email
-
-                        newUser.save(function(err) {
-                            if (err)
-                                return done(err);
-                                
-                            return done(null, newUser);
-                        });
-                    }
-                });
-
-            } else {
-                
-                var user               = req.user; 
-
-                user.google.id    = profile.id;
-                user.google.token = token;
-                user.google.name  = profile.displayName;
-                user.google.email = (profile.emails[0].value || '').toLowerCase(); 
-
-                user.save(function(err) {
-                    if (err)
-                        return done(err);
-                        
-                    return done(null, user);
-                });
-
-            }
-
-        });
-
-    }));
 
 return router;
 }
