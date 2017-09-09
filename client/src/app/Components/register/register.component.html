@@ -1,4 +1,3 @@
-
 <div class="container">
 <div class="row">
 <div class="col-md-4 col-md-offset-4">
@@ -25,7 +24,7 @@
         <li *ngIf="registerForm.controls.username.errors?.required && registerForm.controls.username.dirty">This field is required</li>
         <li *ngIf="registerForm.controls.username.errors?.minlength && registerForm.controls.username.dirty || registerForm.controls.username.errors?.maxlength && registerForm.controls.username.dirty ">Minimum characters: 3, Maximum characters: 15</li>
         <li *ngIf="registerForm.controls.username.errors?.validateUsername && registerForm.controls.username.dirty">Username must not have any special characters</li>
-        <li *ngIf="usernameMessage">{{ usernameMessage }}</li>
+        <li *ngIf="usernameMessage" [ngClass]="usernameclass">{{ usernameMessage }}</li>
       </ul>
     </div>
   </div>
@@ -40,7 +39,7 @@
         <li *ngIf="registerForm.controls.email.errors?.required && registerForm.controls.email.dirty">This field is required</li>
         <li *ngIf="(registerForm.controls.email.errors?.minlength && registerForm.controls.email.dirty || registerForm.controls.email.errors?.maxlength && registerForm.controls.email.dirty ) && registerForm.controls.email.dirty">Minimum characters: 5, Maximum characters: 30</li>
         <li *ngIf="registerForm.controls.email.errors?.validateEmail && registerForm.controls.email.dirty">This must be a valid e-mail</li>
-         <li *ngIf="emailMessage">{{ emailMessage}}</li>
+         <li *ngIf="emailMessage" [ngClass]="emailClass">{{ emailMessage}}</li>
       </ul>
     </div>
   </div>
@@ -71,23 +70,27 @@
       </ul>
     </div>
   </div>
-            <input [disabled]="!registerForm.valid" type="submit" class="btn btn-primary" value="Join Us" />
+
+  
+            <input [disabled]="!registerForm.valid||!emailValid||!usernameValid" type="submit" class="btn btn-primary" value="Join Us" />
             <p>By clicking Join now, you agree to hifriends's User Agreement, Privacy Policy, and Cookie Policy.</p>
            
             </div>
             <div class="social-login">
-            <p>- - - - - - - - - - - - - Register With - - - - - - - - - - - - - </p>
-			<ul>
-            <li><a href=""><i class="fa fa-facebook"></i> Facebook</a></li>
-            <li><a (click)="google()"><i class="fa fa-google-plus"></i> Google+</a></li>
-            <li><a href=""><i class="fa fa-twitter"></i> Twitter</a></li>
-            </ul>
-            
-            </div>
+        <p>- - - - - - - - - - - - - Sign In With - - - - - - - - -
+         - - - -</p>
+        <ul>
+         <li><a href="/socialAuthentication/auth/twitter"><i class="fa fa-twitter"></i>
+           Twitter</a></li>
+         <li><a href="/socialAuthentication/auth/google"><i
+           class="fa fa-google-plus"></i>Google</a></li>
+            <li><a href="/socialAuthentication/auth/linkedin"><i class="fa fa-linkedin"></i>
+           linkedIn</a></li>
+        </ul>
+       </div>
         </div>
               </form>
     </div>
     </div>
     </div>
     </div>
- 

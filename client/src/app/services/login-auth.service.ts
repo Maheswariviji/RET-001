@@ -14,7 +14,7 @@ export class LoginAuthService {
   constructor(
     private http: Http
   ) { }
-
+  
  
   createAuthenticationHeaders() {
     this.loadToken(); 
@@ -58,12 +58,13 @@ export class LoginAuthService {
     this.createAuthenticationHeaders();
     return this.http.get(this.domain + '/loginAuthentication/profile', this.options).map(res => res.json());
   }
-
+  
 
   loggedIn() {
     return tokenNotExpired();
   }
 
-
-
+  checkEmailForLogin(email) {
+      return this.http.get(this.domain + '/reg/checkEmailForLogin/' + email).map(res => res.json());
+    }
 }

@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute, ParamMap} from '@angular/router';
 import { ResetpasswordService } from '../../services/reset-password.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { ViewContainerRef } from '@angular/core';
-
+import 'rxjs/add/operator/switchMap';
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.css']
 })
 export class ResetPasswordComponent implements OnInit {
-    token: string;
+    token;
+    
     resetForm: FormGroup;
      isHidden =true;
   constructor( private formBuilder: FormBuilder,
@@ -21,6 +22,7 @@ export class ResetPasswordComponent implements OnInit {
       this.createForm(); 
       this.token = route.snapshot.params['id'];
       this.toastr.setRootViewContainerRef(vcr);
+      this.token ;
   }
 
  
@@ -58,7 +60,8 @@ export class ResetPasswordComponent implements OnInit {
   
   onResetSubmit() {
       const user = {            
-              password: this.resetForm.get('password').value
+              password: this.resetForm.get('password').value,
+              resettoken:this.token
             }
       
       this.ResetpasswordService.savePassword(user).subscribe(data => {
@@ -86,9 +89,10 @@ export class ResetPasswordComponent implements OnInit {
           } else {
               this.toastr.success(data.message, 'Success!');
               this.isHidden=false;
+              console.log(data.user);
+              data.user.local.resettoken= this.token;
+             
       }
       });
-  
-
 }
 }

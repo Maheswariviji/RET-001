@@ -18,7 +18,7 @@
           [ngClass]="{'has-error': (loginform.controls.email.errors && loginform.controls.email.dirty) || (!validateEmail && loginform.controls.email.dirty), 'has-success': !loginform.controls.email.errors && validateEmail}">
           <input type="email" class="form-control"
            placeholder="*Email" name="email"
-           formControlName="email">
+           formControlName="email" (change)="checkEmailForLogin()" />
           <ul class="help-block">
            <li
             *ngIf="loginform.controls.email.errors?.required && loginform.controls.email.dirty">This
@@ -29,7 +29,7 @@
            <li
             *ngIf="loginform.controls.email.errors?.validateEmail && loginform.controls.email.dirty">This
             must be a valid e-mail</li>
-           <!-- <li *ngIf="emailMessage">{{ emailMessage}}</li> -->
+           <li *ngIf="emailMessage" [ngClass]="emailClass">{{ emailMessage}}</li>
           </ul>
          </div>
         </div>
@@ -37,7 +37,7 @@
         <div class="form-group">
          <label for="password">Password</label>
          <div
-          [ngClass]="{'has-error': (loginform.controls.password.errors && loginform.controls.password.dirty), 'has-success': !loginform.controls.password.errors }">
+          [ngClass]="{'has-error':(loginform.controls.password.errors && loginform.controls.password.dirty), 'has-success': !loginform.controls.password.errors }">
           <input type="password" class="form-control"
            placeholder="*Password" name="password"
            formControlName="password">
@@ -45,18 +45,11 @@
            <li
             *ngIf="loginform.controls.password.errors?.required && loginform.controls.password.dirty">This
             field is required</li>
-           <li
-            *ngIf="loginform.controls.password.errors?.minlength && loginform.controls.password.dirty || loginform.controls.password.errors?.maxlength && loginform.controls.password.dirty ">Minimum
-            characters: 8, Maximum characters: 35</li>
-           <li
-            *ngIf="loginform.controls.password.errors?.validatePassword && loginform.controls.password.dirty">Must
-            have at least one uppercase, lowercase, special character,
-            and number</li>
           </ul>
          </div>
         </div>
 
-        <input [disabled]="!loginform.valid" type="submit"
+        <input [disabled]="!loginform.valid || !emailValid" type="submit"
        class="btn btn-primary"  value="Sign In" /> <a routerLink="/forgot">Forgot
          Password?</a> 
        </div>
@@ -64,12 +57,12 @@
         <p>- - - - - - - - - - - - - Sign In With - - - - - - - - -
          - - - -</p>
         <ul>
-         <li><a href="/auth/facebook"><i class="fa fa-facebook"></i>
-           Facebook</a></li>
-         <li><a href="/auth/twitter"><i
-           class="fa fa-google-plus"></i> Google+</a></li>
-         <li><a href="/auth/google"><i class="fa fa-twitter"></i>
+         <li><a href="/socialAuthentication/auth/twitter"><i class="fa fa-twitter"></i>
            Twitter</a></li>
+         <li><a href="/socialAuthentication/auth/google"><i
+           class="fa fa-google-plus"></i>Google</a></li>
+            <li><a href="/socialAuthentication/auth/linkedin"><i class="fa fa-linkedin"></i>
+           linkedIn</a></li>
         </ul>
        </div>
        <div class="clearfix"></div>

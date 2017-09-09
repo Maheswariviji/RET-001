@@ -116,32 +116,17 @@ const passwordValidators = [
 
 var userSchema = mongoose.Schema({
 
-    local            : {
-    	  username: { type: String, required: true, unique: true, lowercase: true },
-        email        :{ type:String,required: true, unique: true, lowercase: true },
-        password     : {type:String,required: true},
-        resettoken: { type: String, required: false }
+        local         : {
+        id:{type:String},
+        provider:{type:String},
+    	username: { type: String},
+        email :{ type:String, unique: true, lowercase: true },
+        password : {type:String},
+        gender: {type:String},
+        age: {type:String},
+        resettoken: { type: String, required: false}
       },
-   
-    // facebook         : {
-    //     id           : String,
-    //     token        : String,
-    //     email        : {type:String,required: true, unique: true, lowercase: true},
-    //     name         : {type:String,required: true, unique: true, lowercase: true}
-    // },
-    // twitter          : {
-    //     id           : String,
-    //     token        : String,
-    //     displayName  : String,
-    //     username     : {type:String,required: true, unique: true, lowercase: true}
-    // },
-    google           : {
-        id           : String,
-        token        : String,
-        email        : {type:String,required: true, unique: true, lowercase: true},
-        name         : {type:String,required: true, unique: true, lowercase: true}
-    }
-
+  
 });
 
 

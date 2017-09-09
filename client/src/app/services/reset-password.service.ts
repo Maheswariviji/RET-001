@@ -10,9 +10,9 @@ export class ResetpasswordService {
    
     reset(token) {
         
-        return this.http.get(this.domain + '/forgotPasswordAuthentication/resetpassword/ '+ token).map(res => res.json());
+        return this.http.get(this.domain + '/forgotPasswordAuthentication/resetpassword/'+token).map(res => res.json());
       }
     savePassword(user) {
-        return this.http.get(this.domain + '/forgotPasswordAuthentication/savepassword ', user).map(res => res.json());
+        return this.http.put(this.domain + '/forgotPasswordAuthentication/savepassword',user).map(res => res.json());
       }
   }

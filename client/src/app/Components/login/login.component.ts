@@ -14,7 +14,10 @@ import { AuthGuard } from '../../guards/auth.guard';
 export class LoginComponent implements OnInit {
 
   loginform:FormGroup;
-previousUrl;
+  previousUrl;
+  emailValid;
+  emailClass;
+  emailMessage;
 
   constructor(private formBuilder: FormBuilder,public router: Router,
           private authService: LoginAuthService,public toastr: ToastsManager,
@@ -30,32 +33,19 @@ previousUrl;
         Validators.required, 
         Validators.minLength(5), 
         Validators.maxLength(30), 
-        this.validateEmail 
+        this.validateEmail
+        
       ])],
      
       password: ['', Validators.compose([
-        Validators.required,
-        Validators.minLength(8), 
-        Validators.maxLength(35), 
-        this.validatePassword 
+        Validators.required
       ])],
      
      
     }); 
   }
 
-  validatePassword(controls) {
-    
-    const regExp = new RegExp(/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?=.*?[\W]).{8,35}$/);
-   
-    if (regExp.test(controls.value)) {
-      return null; 
-    } else {
-      return { 
-       'validatePassword': true
-        } 
-    }
-  }
+ 
 validateEmail(controls) {
    
     const regExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
@@ -65,6 +55,7 @@ validateEmail(controls) {
     } else {
       return { 'validateEmail': true } // Return as invalid email
     }
+    
   }
  
   disableForm() {
@@ -76,9 +67,22 @@ validateEmail(controls) {
     this.loginform.controls['password'].enable(); 
   }
 
+  checkEmailForLogin() {
+      
+      this.authService.checkEmailForLogin(this.loginform.get('email').value).subscribe(data => {
+          if (!data.success) {
+             this.emailValid = false; 
+             this.emailMessage = data.message; 
+             this.emailClass='alert alert-danger';
+           } else {
+             this.emailValid = true; 
+             this.emailMessage = data.message; 
+             this.emailClass='alert alert-success';
+           }
+         });
+       }
 onLogin()
 {
-
     const user = {
       email: this.loginform.get('email').value, 
       password: this.loginform.get('password').value
@@ -89,6 +93,7 @@ onLogin()
             this.toastr.error(data.message, 'Oops!');
         } else {
             this.toastr.success(data.message, 'Success!');
+            console.log(data);
           this.authService.storeUserData(data.token, data.user);
         
           setTimeout(() => {
@@ -97,9 +102,10 @@ onLogin()
       } else{
             this.router.navigate(['/dashboard']); 
       }        }, 2000);
-  }
+  }                                            
     });
 }
+
   ngOnInit() {
   
       if (this.authGuard.redirectUrl) {

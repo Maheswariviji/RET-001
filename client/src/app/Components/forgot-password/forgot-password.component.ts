@@ -44,6 +44,7 @@ validateEmail(controls) {
     }
   }
 
+
 onForgotSubmit() {
     const user = {  
             email: this.forgotForm.get('email').value

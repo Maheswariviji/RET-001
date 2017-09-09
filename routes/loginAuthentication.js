@@ -15,7 +15,7 @@ module.exports = (router) => {
         res.json({ success: false, message: 'No password was provided.' }); 
       } else {
         
-        User.findOne({ local:{username: req.body.email} }, (err, user) => {
+        User.findOne({'local.email': req.body.email }, (err, user) => {
           
           if (err) {
             res.json({ success: false, message: err }); 
@@ -24,13 +24,15 @@ module.exports = (router) => {
             if (!user) {
               res.json({ success: false, message: 'Email not found.' }); 
             } else {
-              const validPassword = user.comparePassword(req.body.password); 
-              
+            	console.log(user);
+              const validPassword = user.validPassword(req.body.password); 
+               console.log(validPassword);
               if (!validPassword) {
                 res.json({ success: false, message: 'Password invalid' }); 
               } else {
+            	 
                 const token = jwt.sign({ userId: user._id }, config.secret, { expiresIn: '24h' }); 
-                res.json({ success: true, message: 'Success!', token: token, user: { username: user.username } }); 
+                res.json({ success: true, message: "welcome "+user.local.username, token: token, user: { username: user.local.username } }); 
               }
             }
           }
@@ -59,7 +61,7 @@ module.exports = (router) => {
   });
 
   router.get('/profile', (req, res) => {
-    User.findOne({ _id: req.decoded.userId }).select('username email').exec((err, user) => {
+    User.findOne({ '_id': req.decoded.userId }).select('username email').exec((err, user) => {
       if (err) {
         res.json({ success: false, message: err }); 
       } else {

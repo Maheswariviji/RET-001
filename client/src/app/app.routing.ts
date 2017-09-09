@@ -12,7 +12,8 @@ const appRoutes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'forgot', component: ForgotPasswordComponent },
     { path: 'dashboard', component: DashboardComponent },
-    { path: 'reset/:id', component: ResetPasswordComponent }
+    { path: 'reset/:id', component: ResetPasswordComponent },
+    { path: 'dashboard/:token/:user', component: DashboardComponent }
 ];
 @NgModule( {
     declarations: [],
