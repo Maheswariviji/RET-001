@@ -83,7 +83,7 @@ passport.use(new GoogleStrategy({
   
   function(request, accessToken, refreshToken, profile, done) {
 	  process.nextTick(function() {
-         
+         console.log(profile);
           User.findOne({ 'local.email':profile.email }, function(err, user) {
               if (err)
                   return done(err);
@@ -287,8 +287,7 @@ router.get('/twitter/return',function(req,res, next) {
 });
 router.get('/auth/google',
 		  passport.authenticate('google', { scope: 
-		  	[ 'https://www.googleapis.com/auth/plus.login',
-		  	, 'https://www.googleapis.com/auth/plus.profile.emails.read' ] }
+		  	[ 'profile','email' ] }
 		));
 		 
 		router.get( '/auth/google/callback',function(req,res, next) {
