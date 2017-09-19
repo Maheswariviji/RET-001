@@ -13,7 +13,7 @@ import { AuthGuard } from '../../guards/auth.guard';
 })
 export class LoginComponent implements OnInit {
 
-  loginform:FormGroup;
+  loginform : FormGroup;
   previousUrl;
   emailValid;
   emailClass;
@@ -108,10 +108,10 @@ onLogin()
 
   ngOnInit() {
   
-      if (this.authGuard.redirectUrl) {
+          if (this.authGuard.redirectUrl) {
           this.toastr.error('You must be logged in to view that page.', 'Oops!'); 
-        this.previousUrl = this.authGuard.redirectUrl; 
-  this.authGuard.redirectUrl = undefined; 
+          this.previousUrl = this.authGuard.redirectUrl; 
+          this.authGuard.redirectUrl = undefined; 
   }
   }
 }

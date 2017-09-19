@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit {
     user ;
     
   constructor( public router: Router ,public route: ActivatedRoute,private authService: LoginAuthService) {
-      this.token = route.snapshot.params['token'];
+      this.token = route.snapshot.params[''];
       this.user=route.snapshot.params['user'];
       this.user;
       this.token;

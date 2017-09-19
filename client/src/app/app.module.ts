@@ -18,6 +18,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { NotAuthGuard } from './guards/notAuth.guard';
 import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
 
+
 @NgModule( {
     declarations: [
         AppComponent,
@@ -25,7 +26,8 @@ import { ResetPasswordComponent } from './Components/reset-password/reset-passwo
         LoginComponent,
         ForgotPasswordComponent,
         DashboardComponent,
-        ResetPasswordComponent
+        ResetPasswordComponent,
+        
     ],
     imports: [ BrowserAnimationsModule,
         BrowserModule,
